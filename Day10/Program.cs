@@ -34,7 +34,7 @@ namespace Day10
 
             //Load data as ascii
             inputLengths = Encoding.UTF8.GetBytes(File.ReadAllText(inputFile))
-                    .Select(x=>(int)x)
+                    .Select(x => (int)x)
                     .Concat(new int[] { 17, 31, 73, 47, 23 })
                 .ToArray();
 
@@ -56,71 +56,87 @@ namespace Day10
             Console.WriteLine("");
             Console.ReadKey();
         }
+    }
 
-        public class CircularList
+    public class CircularList
+    {
+        private readonly int length;
+        public readonly int[] data;
+
+        public int currentIndex = 0;
+        public int skipCount = 0;
+
+        public CircularList(int length)
         {
-            private readonly int length;
-            public readonly int[] data;
+            this.length = length;
 
-            public int currentIndex = 0;
-            public int skipCount = 0;
-
-            public CircularList(int length)
+            data = new int[length];
+            for (int i = 0; i < length; i++)
             {
-                this.length = length;
+                data[i] = i;
+            }
+        }
 
-                data = new int[length];
-                for (int i = 0; i < length; i++)
+        public int this[int i]
+        {
+            get => data[i % length];
+            set => data[i % length] = value;
+        }
+
+        public void Twist(int loopSize)
+        {
+            if (loopSize >= length)
+            {
+                throw new ArgumentException($"Unexpected loopSize: {loopSize}");
+            }
+
+            int startIndex = currentIndex;
+            int endIndex = currentIndex + loopSize - 1;
+            int steps = loopSize / 2;
+
+            for (int offset = 0; offset < steps; offset++)
+            {
+                int temp = this[startIndex + offset];
+                this[startIndex + offset] = this[endIndex - offset];
+                this[endIndex - offset] = temp;
+            }
+
+            currentIndex += loopSize + skipCount++;
+
+            skipCount %= length;
+            currentIndex %= length;
+        }
+
+        public string GetDenseHash()
+        {
+            int denseLength = length / 16;
+            int[] hash = new int[denseLength];
+
+            for (int i = 0; i < denseLength; i++)
+            {
+                for (int j = 0; j < 16; j++)
                 {
-                    data[i] = i;
+                    hash[i] ^= data[16 * i + j];
                 }
             }
 
-            public int this[int i]
+            return string.Concat(hash.Select(x => x.ToString("X2")));
+        }
+
+        public byte[] GetDenseHashBytes()
+        {
+            int denseLength = length / 16;
+            byte[] hash = new byte[denseLength];
+
+            for (int i = 0; i < denseLength; i++)
             {
-                get => data[i % length];
-                set => data[i % length] = value;
+                for (int j = 0; j < 16; j++)
+                {
+                    hash[i] ^= (byte)data[16 * i + j];
+                }
             }
 
-            public void Twist(int loopSize)
-            {
-                if (loopSize >= length)
-                {
-                    throw new ArgumentException($"Unexpected loopSize: {loopSize}");
-                }
-
-                int startIndex = currentIndex;
-                int endIndex = currentIndex + loopSize - 1;
-                int steps = loopSize / 2;
-
-                for (int offset = 0; offset < steps; offset++)
-                {
-                    int temp = this[startIndex + offset];
-                    this[startIndex + offset] = this[endIndex - offset];
-                    this[endIndex - offset] = temp;
-                }
-
-                currentIndex += loopSize + skipCount++;
-
-                skipCount %= length;
-                currentIndex %= length;
-            }
-
-            public string GetDenseHash()
-            {
-                int denseLength = length / 16;
-                int[] hash = new int[denseLength];
-
-                for (int i = 0; i < denseLength; i++)
-                {
-                    for(int j = 0; j < 16; j++)
-                    {
-                        hash[i] ^= data[16 * i + j];
-                    }
-                }
-
-                return string.Concat(hash.Select(x=>x.ToString("X2")));
-            }
+            return hash;
         }
     }
 }
