@@ -63,7 +63,7 @@ namespace Day16
                 'a', 'b', 'c', 'd',
                 'e', 'f', 'g', 'h',
                 'i', 'j', 'k', 'l',
-                'm', 'n', 'o', 'p'};
+                'm', 'n', 'o', 'p' };
 
             for (int i = 0; i < remainingLoops; i++)
             {
