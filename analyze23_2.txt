@@ -1,0 +1,50 @@
+if (a == 0)
+{
+    b = 107_900
+    c = 124_900
+}
+else
+{
+    b = 79
+    c = 79
+}
+
+
+while (true)
+{
+    f = 1
+
+    for (d = 2; d < b; d++)
+    {
+        for (e = 2; e < b; e++)
+        {
+            if (d * e == b)
+            {
+                f = 0
+            }
+        }
+    }
+
+    if (f == 0)
+    {
+        h++
+    }
+
+    if (b == c)
+    {
+        break;
+    }
+
+    b += 17
+}
+
+//Becomes:
+for (b = b0; b < c; b += 17)
+{
+    if (b not prime)
+    {
+        h++
+    }
+}
+
+//Count non-primes between b and c incrementing by 17

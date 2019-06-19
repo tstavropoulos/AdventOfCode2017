@@ -1,0 +1,56 @@
+if (a != 0)
+{
+    b = 107_900
+    c = 124_900
+}
+else
+{
+    b = 79
+    c = 79
+}
+
+
+while (true)
+{
+    f = 1
+    d = 2
+
+    do
+    {
+        e = 2
+        //Innerest Loop
+        do
+        {
+            g = d * e - b
+            
+            if (g == 0)
+            {
+                f = 0
+            }
+
+            e++
+            g = e
+            g -= b
+        }
+        while (g != 0)
+
+        d++
+        g = d
+        g -= b
+    }
+    while(g != 0)
+
+    if (f == 0)
+    {
+        h++
+    }
+    g = b
+    g -= c
+
+    if (g == 0)
+    {
+        break;
+    }
+
+    b += 17
+}
